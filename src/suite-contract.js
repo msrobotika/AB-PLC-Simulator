@@ -72,6 +72,7 @@ export function modbusPreview(frame) {
       word(row.analog_ai0 * 100),
       word(row.process_value * 100)
     ],
+    input_registers: [word(row.analog_ai0*100),word(row.process_value*100)],
     coils: [
       Boolean(frame.cpu.outputs["Q0.0"]),
       Boolean(frame.cpu.outputs["Q0.1"]),
