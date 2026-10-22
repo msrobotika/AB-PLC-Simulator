@@ -1,6 +1,6 @@
 {
   "name": "ab-plc-simulator",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "description": "Simulador PLC educativo, offline y determinista · MS ROBOTIKA",

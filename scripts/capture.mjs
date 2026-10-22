@@ -22,7 +22,21 @@ try {
   await page.screenshot({ path: "docs/screenshots/dashboard.png", fullPage: true, animations: "disabled" });
   await page.locator('.nav-item[data-view="program"]').click();
   await page.screenshot({ path: "docs/screenshots/program.png", fullPage: true, animations: "disabled" });
-  process.stdout.write("Capturas auténticas creadas en docs/screenshots/\n");
+  await page.locator('.nav-item[data-view="kop"]').click();
+  await page.locator("#kop-canvas .kop-rung").first().waitFor();
+  if (await page.locator("#kop-canvas .kop-rung").count() !== 6) throw new Error("No se renderizan las seis redes");
+  await page.screenshot({ path: "docs/screenshots/kop-editor.png", fullPage: true, animations: "disabled" });
+  // Browser E2E: edit a new visual network, undo/redo, and load the compiled program.
+  await page.locator("#kop-add").click();
+  if (await page.locator("#kop-canvas .kop-rung").count() !== 7) throw new Error("No se crea la red");
+  await page.locator("#kop-undo").click();
+  if (await page.locator("#kop-canvas .kop-rung").count() !== 6) throw new Error("Undo falló");
+  await page.locator("#kop-redo").click();
+  await page.locator('#kop-canvas [data-op="add-parallel"]').last().click();
+  await page.locator("#kop-apply").click();
+  if (await page.locator("#kop-canvas .kop-rung").count() !== 7) throw new Error("La carga KOP falló");
+  if (pageErrors.length) throw new Error("Errores de navegador: " + pageErrors.join("; "));
+  process.stdout.write("Capturas reales y edición KOP E2E completadas\n");
 } finally {
   await browser.close();
 }

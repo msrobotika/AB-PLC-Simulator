@@ -7,9 +7,11 @@
 - [x] Editor JSON, diagnóstico, pruebas CI
 
 ## v0.2 · Editor gráfico
-- [ ] Diseño KOP con arrastrar contactos y bobinas
+- [x] Editor KOP visual por contactos/bobinas, conexiones AND/OR, presets, edición por formularios y undo/redo
+- [ ] Drag-and-drop de componentes de circuitos (actualmente mediante botones)
 - [ ] Tabla de símbolos, variables y gráficos de tendencia
-- [ ] Pruebas E2E y accesibilidad avanzada
+- [x] Prueba E2E del editor en Chromium a través del workflow de capturas
+- [ ] Accesibilidad avanzada, pruebas multi-navegador y responsive E2E
 
 ## v0.3 · Motor extendido
 - [ ] Contadores CTD/CTUD, flancos R_TRIG/F_TRIG y TONR

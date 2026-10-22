@@ -1,5 +1,6 @@
 import { PLCEngine, validateProgram } from "./plc-engine.js";
 import { demoProgram, inputLabels, outputLabels } from "./demo-program.js";
+import { mountKopEditor } from "./kop-ui.js";
 
 const $ = id => document.getElementById(id);
 const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({
@@ -16,6 +17,7 @@ let events = [];
 let lastMotor = false;
 let emergency = false;
 let toastTimeout;
+let kopEditor;
 
 function announce(message, kind = "ok") {
   const el = $("toast");
@@ -131,6 +133,7 @@ function setView(next) {
   const names = {
     console: ["PANEL DE CONTROL", "PLC Simulation Console", "Un entorno digital para diseñar, ejecutar y verificar lógica de control."],
     program: ["PROGRAMA PLC", "Logic Program Studio", "Edición estructurada, validación y persistencia local."],
+    kop: ["EDITOR KOP", "Graphical Ladder Studio", "Edición visual de contactos, bobinas, temporizadores y redes."],
     diagnostics: ["DIAGNÓSTICO", "Runtime Diagnostics", "Inspección de las variables y registro de transiciones."],
     help: ["MANUAL", "Operator Guide", "Instrucciones de uso para la plataforma de simulación."]
   };
@@ -139,6 +142,7 @@ function setView(next) {
   $("view-title").textContent = title + " /";
   $("view-subtitle").textContent = sub;
   if (next === "program") renderProgramEditor();
+  if (next === "kop") kopEditor?.show();
   renderRuntime();
 }
 
@@ -254,10 +258,13 @@ function applyProgram(source) {
     emergency = false;
     saveLocal();
     logEvent("Programa validado y cargado: " + (data.name || "sin título"));
+    kopEditor?.sync(true);
     renderAll();
     announce("Programa cargado: " + data.rungs.length + " redes válidas");
+    return true;
   } catch (err) {
     announce("Error de programa: " + err.message, "error");
+    return false;
   }
 }
 
@@ -339,6 +346,13 @@ function bindEvents() {
 
 loadSaved();
 bindEvents();
+kopEditor = mountKopEditor({
+  element: $("kop-editor"),
+  getProgram: () => engine.program,
+  applyProgram: program => applyProgram(JSON.stringify(program)),
+  readTag: tag => engine.read(tag),
+  notify: announce
+});
 logEvent("AB-PLC Engine inicializado · 100 ms por scan");
 setView("console");
 setInterval(tick, 100);

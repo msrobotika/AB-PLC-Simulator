@@ -8,6 +8,7 @@
   <title>AB-PLC Simulator · MS ROBOTIKA</title>
   <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
   <link rel="stylesheet" href="./src/styles.css">
+  <link rel="stylesheet" href="./src/kop.css">
   <script src="./src/app.js" type="module"></script>
 </head>
 <body>
@@ -21,6 +22,7 @@
       <nav class="nav" aria-label="Navegación principal">
         <button type="button" class="nav-item active" data-view="console"><span>▦</span> Panel de control</button>
         <button type="button" class="nav-item" data-view="program"><span>⌘</span> Programa PLC</button>
+        <button type="button" class="nav-item" data-view="kop"><span>⋮</span> Editor KOP</button>
         <button type="button" class="nav-item" data-view="diagnostics"><span>◷</span> Diagnóstico</button>
         <button type="button" class="nav-item" data-view="help"><span>ⓘ</span> Manual de uso</button>
       </nav>
@@ -30,7 +32,7 @@
           <strong>Modo offline</strong>
           <p>Sin PLC ni red industrial conectados.</p>
         </div>
-        <div class="copyright">AB-PLC v0.1.0<br>© 2026 MS ROBOTIKA</div>
+        <div class="copyright">AB-PLC v0.2.0<br>© 2026 MS ROBOTIKA</div>
       </div>
     </aside>
 
@@ -149,6 +151,54 @@
           </div>
         </section>
 
+        <section id="view-kop" class="view" hidden>
+          <div id="kop-editor" class="kop-workspace">
+            <section class="panel kop-mainpanel">
+              <div class="panel-titleline">
+                <div><span class="section-kicker">GRAPHICAL LADDER / KOP</span><h2>Redes de contactos y bobinas</h2></div>
+                <span class="tag">VISUAL EDITOR v0.2</span>
+              </div>
+              <div id="kop-toolbar" class="kop-toolbar">
+                <div class="kop-toolbar-left">
+                  <button type="button" id="kop-add" class="btn btn-outline">＋ Nueva red</button>
+                  <button type="button" id="kop-undo" class="btn btn-outline">↶ Deshacer</button>
+                  <button type="button" id="kop-redo" class="btn btn-outline">↷ Rehacer</button>
+                  <span id="kop-count" class="kop-counter">0 REDES</span>
+                </div>
+                <div class="kop-toolbar-right">
+                  <button type="button" id="kop-discard" class="btn btn-outline">Descartar</button>
+                  <button type="button" id="kop-apply" class="btn btn-primary">✓ Validar y cargar</button>
+                </div>
+              </div>
+              <div id="kop-feedback" class="kop-feedback" role="status" aria-live="polite"></div>
+              <div id="kop-canvas" class="kop-canvas"></div>
+            </section>
+            <aside class="panel kop-sidepanel">
+              <span class="section-kicker">ENGINEERING / HELP</span>
+              <h2>Editor KOP visual</h2>
+              <p>Configura contactos NO/NC conectados <strong>en serie</strong> (AND) o <strong>en paralelo</strong> (OR). El circuito se traduce al motor lógico propio.</p>
+              <div class="kop-scheme"><pre> L+ ──| |────|/|────( )── N
+       I0.0   I0.1    Q0.0
+
+         ┌──| |──┐
+ L+ ─────┤ I0.0  ├────( )── N
+         └──| |──┘
+            I0.1</pre></div>
+              <div class="side-divider"></div>
+              <span class="section-kicker">FLUJO SEGURO</span>
+              <ol class="kop-guide">
+                <li>Edita una red.</li><li>Añade contactos en serie o paralelo.</li>
+                <li>Selecciona instrucción y destino.</li>
+                <li>Valida y carga los cambios.</li>
+                <li>Comprueba las salidas en el panel de control.</li>
+              </ol>
+              <div class="kop-tip"><strong>Solo simulación.</strong> Los cambios no se ejecutan hasta validarlos. El E-STOP del simulador no es un sistema de seguridad funcional.</div>
+              <div class="side-divider"></div>
+              <p>Las condiciones complejas no representables conservan sus datos. Para editarlas, utiliza <strong>Programa PLC → JSON</strong>.</p>
+            </aside>
+          </div>
+        </section>
+
         <section id="view-diagnostics" class="view" hidden>
           <div class="two-col secondary-grid">
             <section class="panel"><div class="panel-titleline"><div><span class="section-kicker">STATE / INSPECTOR</span><h2>Estado del motor</h2></div><span class="tag">TIEMPO REAL</span></div><pre class="inspect-code" id="diag-json"></pre></section>
@@ -171,7 +221,7 @@
           </div>
         </section>
 
-        <footer>MS ROBOTIKA <span>·</span> AB-PLC SIMULATOR <span>·</span> OPEN SOURCE / MIT <span class="footer-right">OFFLINE-FIRST &nbsp; // &nbsp; BUILD 0.1.0</span></footer>
+        <footer>MS ROBOTIKA <span>·</span> AB-PLC SIMULATOR <span>·</span> OPEN SOURCE / MIT <span class="footer-right">OFFLINE-FIRST &nbsp; // &nbsp; BUILD 0.2.0</span></footer>
       </div>
     </main>
   </div>

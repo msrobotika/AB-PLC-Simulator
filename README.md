@@ -1,6 +1,6 @@
 # AB-PLC Simulator
 
-**MS ROBOTIKA · Industrial Labs · v0.1.0**
+**MS ROBOTIKA · Industrial Labs · v0.2.0**
 
 [![CI](https://github.com/msrobotika/AB-PLC-Simulator/actions/workflows/verify.yml/badge.svg)](https://github.com/msrobotika/AB-PLC-Simulator/actions/workflows/verify.yml)
 ![MIT](https://img.shields.io/badge/License-MIT-37dfb3)
@@ -18,6 +18,8 @@ La acción [Capture screenshots](.github/workflows/screenshots.yml) genera captu
 
 ![Editor de redes](docs/screenshots/program.png)
 
+![Editor KOP visual](docs/screenshots/kop-editor.png)
+
 ## Funciones implementadas
 
 | Función | Estado |
@@ -27,9 +29,10 @@ La acción [Capture screenshots](.github/workflows/screenshots.yml) genera captu
 | Coil, SET, RESET, TON, TOF, CTU | ✅ |
 | Comparador de entrada analógica | ✅ |
 | Consola responsive, cinta y sensores virtuales | ✅ |
+| Editor KOP visual: NO/NC, serie/paralelo, bobinas, TON/TOF/CTU, undo/redo | ✅ |
 | Inspector, registros de eventos, importación/exportación JSON | ✅ |
 | Pruebas automáticas / GitHub Actions | ✅ |
-| KOP gráfico, AWL, SCL, GRAFCET nativos | **Pendiente** |
+| Importación nativa AWL/SCL/GRAFCET/formatos de fabricantes | **Pendiente** |
 | Modbus TCP, OPC UA, conexión con PLC real | **Pendiente** |
 
 No se afirma compatibilidad con formatos Siemens/Omron, ni conformidad IEC 61131-3.
@@ -83,6 +86,9 @@ index.html                Interfaz
 src/
   app.js                  UI, interacción y cinta virtual
   styles.css              Diseño responsive
+  kop-model.js            Conversión AST ↔ redes KOP visuales
+  kop-ui.js               Edición de redes, historial, renderizado
+  kop.css                 Estilos para diagramas KOP
   plc-engine.js           Motor determinista aislado de la UI
   demo-program.js         Ejemplo de seis redes
 scripts/                  Servidor estático y capturas automatizadas
@@ -91,7 +97,7 @@ docs/                     Arquitectura, seguridad, hoja de ruta, capturas
 .github/workflows/        Verificación, capturas y Pages
 ~~~
 
-Más detalles en [Arquitectura](docs/ARCHITECTURE.md), [Hoja de ruta](docs/ROADMAP.md) y [Seguridad](docs/SAFETY.md).
+Más detalles en [Editor KOP](docs/KOP_EDITOR.md), [Arquitectura](docs/ARCHITECTURE.md), [Hoja de ruta](docs/ROADMAP.md) y [Seguridad](docs/SAFETY.md).
 
 **Aviso:** uso educativo y de simulación. No controla máquinas, no implementa parada de emergencia física ni certifica seguridad funcional.
 
