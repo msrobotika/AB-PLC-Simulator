@@ -1,6 +1,6 @@
 # AB-PLC Simulator
 
-**MS ROBOTIKA · Industrial Labs · v0.3.0**
+**MS ROBOTIKA · Industrial Labs · v0.4.0**
 
 [![CI](https://github.com/msrobotika/AB-PLC-Simulator/actions/workflows/verify.yml/badge.svg)](https://github.com/msrobotika/AB-PLC-Simulator/actions/workflows/verify.yml)
 ![MIT](https://img.shields.io/badge/License-MIT-37dfb3)
@@ -167,3 +167,17 @@ El código del protocolo está en [src/modbus-tcp.js](src/modbus-tcp.js), con pr
 ## Alcance y profesionalización
 
 Documentos de estado: [PROJECT_STATUS](docs/PROJECT_STATUS.md), [CHANGELOG](CHANGELOG.md), [ROADMAP](docs/ROADMAP.md), [LICENCIA](LICENSE) y [SEGURIDAD](docs/SAFETY.md). El proyecto cuenta con escenarios deterministas, CI y capturas de navegador. Las próximas integraciones están descritas como tareas en [Issues](https://github.com/msrobotika/AB-PLC-Simulator/issues), no como funciones terminadas.
+
+## Suite Live v0.4 — CPU única para pantalla y Modbus TCP
+
+El proceso Node aloja una CPU VirtualPLC; la web controla esa instancia mediante API local autenticada y AB-Modbus Studio lee sus registros por Modbus TCP.
+
+    npm run suite:live
+
+Abre la URL completa que imprime la consola en el navegador **del mismo PC**. Incluye un token privado en el fragmento del URL. Después, abre AB-Modbus Studio en 127.0.0.1:1502, Unit ID 1, FC03 dirección 0, longitud 5. Pulsa RUN y MARCHA en la web para observar cambios en los registros.
+
+Opciones: --scenario tank, --http-port 4174, --modbus-port 1503, --auto-run.
+
+Seguridad: ambos servidores escuchan solo en localhost; la API web requiere token aleatorio, valida Host/Origin y solo envía comandos al PLC virtual. El modo npm run dev sigue siendo independiente. Nunca compartas la URL que contiene el token.
+
+[Arquitectura Suite Live](docs/SUITE_LIVE.md).

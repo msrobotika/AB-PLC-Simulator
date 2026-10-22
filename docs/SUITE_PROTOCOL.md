@@ -50,3 +50,9 @@ FC04: Input Register 0 = AI0 × 100 y 1 = variable de proceso × 100. Todo es si
 Comprobar en AB-Modbus Studio: host 127.0.0.1, puerto 1502, Unit ID 1, leer FC03 dirección 0 longitud 5. Arrancar el puente y mantener abierta su consola. Las pruebas unitarias incluyen una conexión TCP real por el bucle local y una escritura rechazada.
 
 **Seguridad**: este servidor no enlaza a IP de LAN y no crea cliente de PLC físico. No exponerlo mediante port-forwarding ni usarlo como sistema de automatización de planta.
+
+## Suite Live v0.4
+
+Una única CPU VirtualPLC se aloja en el proceso Node, compartida por (1) servidor HTTP local de HMI autenticada y (2) servidor Modbus TCP FC01–04 de solo lectura. La HMI llama a /api/live/state y /api/live/command con Bearer token de 256 bits generado al inicio, introducido mediante fragmento de URL (no enviado al servidor en la navegación). Se valida Host, Origin y Sec-Fetch-Site. Ejecutar npm run suite:live.
+
+El modo anterior npm run sim:modbus conserva su CPU independiente y no sincroniza la pestaña web. Para estado compartido usa Suite Live. No existe todavía bus IPC general ni conexión a PLC físico.

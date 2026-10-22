@@ -1,5 +1,12 @@
 # Registro de cambios
 
+## 0.4.0 — 2026-10-22
+- CPU compartida entre la interfaz HTTP y Modbus TCP de solo lectura.
+- API local autenticada y control de origen.
+- Modo Suite Live independiente de la simulación offline.
+- Pruebas integradas HTTP y Modbus.
+
+
 ## 0.3.0 — 2026-10-22
 - Núcleo de CPU virtual, escenarios transportador y depósito.
 - Modos RUN/PAUSE/STOP/STEP, rack digital, fallos, forzado, históricos y gráficos.

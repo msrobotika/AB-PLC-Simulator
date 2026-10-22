@@ -6,6 +6,7 @@ import { VirtualPLC, plantCatalog, faultDescriptions } from "./plant-runtime.js"
 import { suiteCatalog, telemetryCSV, telemetryEnvelope, modbusPreview, downloadText } from "./suite-contract.js";
 import { importABKop } from "./kop-import.js";
 import { validateProgram } from "./plc-engine.js";
+import { connectSuiteLive } from "./suite-live-client.js";
 
 const $ = id => document.getElementById(id);
 const esc = value => String(value ?? "").replace(/[&<>"']/g, ch => ({
@@ -103,7 +104,10 @@ function suiteCards() {
 }
 
 export function mountLabSimulator({ notify = (message)=>window.alert(message) } = {}) {
-  const cpu = new VirtualPLC("conveyor");
+  let cpu = new VirtualPLC("conveyor");
+  let remote = null;
+  let pollClock = null;
+  let lastViewScenario = cpu.scenario;
   let clock = null;
   let rate = 1;
   let importInfo = null;
@@ -124,6 +128,13 @@ export function mountLabSimulator({ notify = (message)=>window.alert(message) } 
   function frameRender() {
     const f = cpu.snapshot();
     const labels = plantCatalog[cpu.scenario];
+    if (lastViewScenario !== cpu.scenario) {
+      lastViewScenario=cpu.scenario;
+      rebuildOptions();
+      $("lab-scenario").value=cpu.scenario;
+    }
+    $("lab-connection").textContent=remote ? "LIVE · CPU COMPARTIDA CON MODBUS" : "LOCAL · CPU EN NAVEGADOR";
+    $("lab-connection").className=remote ? "lab-live-state" : "lab-local-state";
     $("lab-scan").textContent = fmt(f.scan);
     $("lab-time").textContent = (f.simulatedMs/1000).toFixed(1) + " s";
     $("lab-mode").textContent = f.mode;
@@ -160,23 +171,24 @@ export function mountLabSimulator({ notify = (message)=>window.alert(message) } 
     $("lab-sample-count").textContent = cpu.samples.length + " muestras en memoria";
   }
 
-  function setScenario(name,program,info) {
-    cpu.loadScenario(name,program);
+  async function setScenario(name,program,info) {
+    await cpu.loadScenario(name,program,info?.inputDefaults);
     importInfo=info??null;
-    if(info) {
+    if(info && !remote) {
       for(const [tag,value] of Object.entries(info.inputDefaults)) cpu.setInput(tag,value);
     }
     $("lab-scenario").value=name;
+    lastViewScenario=name;
     rebuildOptions();
     frameRender();
     notify("Simulador preparado: " + (program?.name ?? plantCatalog[name].name));
   }
-  function handler(action) {
-    try { action(); frameRender(); }
+  async function handler(action) {
+    try { await action(); frameRender(); }
     catch(err) { notify(err.message,"error"); }
   }
   function tick() {
-    if (cpu.mode!=="RUN") return;
+    if (remote || cpu.mode!=="RUN") return;
     try {
       for (let i=0;i<rate;i++) cpu.tick(100);
       if (++paintCounter % 2===0) frameRender();
@@ -196,7 +208,7 @@ export function mountLabSimulator({ notify = (message)=>window.alert(message) } 
   $("lab-stop-input").addEventListener("click",()=>handler(()=>cpu.pressStop()));
   $("lab-estop").addEventListener("click",()=>handler(()=>cpu.toggleEstop()));
   $("lab-scenario").addEventListener("change",event=>handler(()=>setScenario(event.target.value)));
-  $("lab-rate").addEventListener("change",event=>{rate=Number(event.target.value);});
+  $("lab-rate").addEventListener("change",event=>{if(!remote)rate=Number(event.target.value);});
   $("lab-fault-controls").addEventListener("change",event=>{
     const fault=event.target.dataset.labFault;
     if(fault) handler(()=>cpu.setFault(fault,Boolean(event.target.checked)));
@@ -227,12 +239,12 @@ export function mountLabSimulator({ notify = (message)=>window.alert(message) } 
       const data=JSON.parse(await file.text());
       if(data.schema===1){
         const imported=importABKop(data);
-        setScenario("rack",imported.program,imported);
+        await setScenario("rack",imported.program,imported);
         $("lab-symbol-table").innerHTML=Object.entries(imported.symbols).map(([k,v])=>
           '<div><code>'+esc(k)+'</code><span>→</span><strong>'+esc(v)+'</strong></div>').join("");
       }else{
         validateProgram(data);
-        setScenario("rack",data);
+        await setScenario("rack",data);
         $("lab-symbol-table").innerHTML="";
       }
     }catch(err){notify("Importación rechazada: "+err.message,"error");}
@@ -241,5 +253,31 @@ export function mountLabSimulator({ notify = (message)=>window.alert(message) } 
   rebuildOptions();
   frameRender();
   clock=setInterval(tick,100);
-  return { cpu, refresh:frameRender, dispose:()=>clearInterval(clock) };
+  if(location.hash.includes("suite=")) {
+    connectSuiteLive().then(shared=>{
+      if(!shared)return;
+      remote=shared;cpu=shared;
+      lastViewScenario="";
+      $("lab-rate").value="1";
+      $("lab-rate").disabled=true;
+      $("lab-rate").title="El servidor Suite Live establece el tiempo de scan";
+      rebuildOptions();frameRender();
+      notify("CPU compartida: pantalla y Modbus consultan el mismo autómata");
+      pollClock=setInterval(async()=>{
+        try {
+          const changed=await shared.poll();
+          if(changed)frameRender();
+        } catch(err) {
+          $("lab-connection").textContent="SUITE LIVE · SIN CONEXIÓN";
+          $("lab-connection").className="lab-disconnected";
+        }
+      },350);
+    }).catch(err=>{
+      $("lab-connection").textContent="SUITE LIVE · TOKEN O SERVICIO INCORRECTO";
+      $("lab-connection").className="lab-disconnected";
+      notify("No se pudo conectar a la CPU compartida: "+err.message,"error");
+    });
+  }
+  return { get cpu(){return cpu;}, refresh:frameRender,
+    dispose:()=>{clearInterval(clock);if(pollClock)clearInterval(pollClock);} };
 }
