@@ -88,3 +88,7 @@
 @media(max-width:1270px){.lab-big-grid,.lab-two-col{grid-template-columns:1fr}.lab-suite-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:870px){.lab-overview{grid-template-columns:repeat(2,minmax(0,1fr))}.lab-controlpanel{grid-template-columns:1fr}.lab-rack{overflow-x:auto}}
 @media(max-width:500px){.lab-overview{gap:8px}.lab-metric{padding:13px}.lab-metric strong{font-size:22px}.lab-suite-grid,.lab-symbols{grid-template-columns:1fr}.lab-io-row{gap:6px}.lab-panel-head{align-items:start;flex-direction:column}}
+
+.lab-live-state{display:inline-block;padding:5px 8px;border-radius:5px;background:#143a31;color:#4fe5ba;border:1px solid #2b755f;font-size:9px;font-weight:850;letter-spacing:.03em}
+.lab-local-state{font-size:9px;color:#7c9fba}
+.lab-disconnected{font-size:9px;color:#ff8797;font-weight:800}

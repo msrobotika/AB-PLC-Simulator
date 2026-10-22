@@ -48,7 +48,7 @@ export function telemetryEnvelope(simulator) {
   const samples = simulator.samples.map(flattenSnapshot);
   return {
     schema: SUITE_SCHEMA,
-    producer: { app: "AB-PLC-Simulator", version: "0.3.0" },
+    producer: { app: "AB-PLC-Simulator", version: "0.4.0" },
     source: "virtual",
     scenario: simulator.scenario,
     sample_period_ms: 100,

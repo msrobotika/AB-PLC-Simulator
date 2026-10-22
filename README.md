@@ -181,3 +181,5 @@ Opciones: --scenario tank, --http-port 4174, --modbus-port 1503, --auto-run.
 Seguridad: ambos servidores escuchan solo en localhost; la API web requiere token aleatorio, valida Host/Origin y solo envía comandos al PLC virtual. El modo npm run dev sigue siendo independiente. Nunca compartas la URL que contiene el token.
 
 [Arquitectura Suite Live](docs/SUITE_LIVE.md).
+
+**Prueba de integración v0.4:** tests/suite-live.test.mjs verifica órdenes HTTP y lectura Modbus TCP de la misma CPU, control de token y bloqueo de orígenes cruzados. El workflow de capturas genera lab-suite-live.png con Chromium real.

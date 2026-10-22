@@ -42,5 +42,5 @@ Estas fases son propuestas, **no funcionalidades presentes**. Cualquier control 
 
 ## Puente Suite · hitos en marcha
 - [x] Modbus TCP localhost FC01–FC04 (solo lectura, instancia separada)
-- [ ] Enlazar la CPU del navegador con la CPU expuesta por TCP
+- [x] Modo Suite Live con una CPU en Node compartida entre interfaz web y Modbus
 - [ ] Conectores verificados mediante pruebas cruzadas con AB-Modbus Studio

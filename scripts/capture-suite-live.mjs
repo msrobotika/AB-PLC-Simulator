@@ -11,7 +11,7 @@ try{
   const errors=[];
   page.on("pageerror",err=>errors.push(err.message));
   await page.goto(suite.url,{waitUntil:"networkidle"});
-  await page.locator("#lab-connection").getByText("CPU COMPARTIDA",{exact:false}).waitFor({timeout:9000});
+  await page.locator("#lab-connection").filter({hasText:"CPU COMPARTIDA"}).waitFor({timeout:9000});
   await page.locator("#lab-run").click();
   await page.locator("#lab-start").click();
   await page.waitForTimeout(1100);

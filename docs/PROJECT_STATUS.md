@@ -1,6 +1,6 @@
 # Estado técnico · AB-PLC Simulator
 
-Fecha de revisión: 22 de octubre de 2026. Versión: v0.3.
+Fecha de revisión: 22 de octubre de 2026. Versión: v0.4.
 
 ## Entregables implementados
 - CPU virtual RUN/PAUSE/STOP/STEP, imagen de proceso y scan determinista.
@@ -14,7 +14,7 @@ Fecha de revisión: 22 de octubre de 2026. Versión: v0.3.
 El workflow Verify engine ejecuta npm run check. Capture screenshots vuelve a comprobar el motor y navega por las vistas de laboratorio y KOP antes de publicar PNG reales. Las capturas no constituyen validación industrial.
 
 ## No implementado
-Un bus de comunicación Suite, adaptadores GRAFCET/Vision, acceso de escritura y acceso por LAN desde Modbus TCP, importación binaria Step7/TIA Portal/Omron, E/S reales, gemelo digital calibrado, CI multiplataforma de SO y cumplimiento de normas de seguridad funcional.
+Un bus IPC general para toda la Suite, adaptadores GRAFCET/Vision, acceso de escritura y acceso por LAN desde Modbus TCP, importación binaria Step7/TIA Portal/Omron, E/S reales, gemelo digital calibrado, CI multiplataforma de SO y cumplimiento de normas de seguridad funcional.
 
 ## Riesgos y próximos pasos
 1. Versionar el contrato de formatos y diseñar SDK AB-Suite Core independiente.
@@ -26,3 +26,6 @@ Un bus de comunicación Suite, adaptadores GRAFCET/Vision, acceso de escritura y
 ## Puente TCP implementado
 
 Arranque manual con npm run sim:modbus, host único 127.0.0.1 puerto 1502, Unit ID 1. FC01/02/03/04 de lectura; escrituras rechazadas. El cliente AB-Modbus Studio puede conectar como cliente externo, pero esta integración no se ha certificado con hardware. La CPU del servicio Node no es todavía la CPU de la sesión web.
+
+## Suite Live · estado compartido
+Iniciar con npm run suite:live. La HMI HTTP y el puente Modbus TCP tienen una fuente única: una instancia VirtualPLC en Node.js. Los comandos del navegador se envían por API local autenticada y las lecturas del cliente Modbus consultan ese mismo objeto. Pruebas: tests/suite-live.test.mjs. Captura reproducible: docs/screenshots/lab-suite-live.png. No es todavía un bus de mensajes general para todas las aplicaciones.

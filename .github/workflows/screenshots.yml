@@ -30,11 +30,13 @@ jobs:
           exit 1
       - name: Capture browser screenshots
         run: node scripts/capture.mjs
+      - name: Capture Suite Live shared CPU
+        run: node scripts/capture-suite-live.mjs
       - name: Version actual screenshots
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/screenshots/dashboard.png docs/screenshots/program.png docs/screenshots/kop-editor.png docs/screenshots/lab-conveyor.png docs/screenshots/lab-fault.png docs/screenshots/lab-tank.png docs/screenshots/lab-suite-import.png
+          git add docs/screenshots/dashboard.png docs/screenshots/program.png docs/screenshots/kop-editor.png docs/screenshots/lab-conveyor.png docs/screenshots/lab-fault.png docs/screenshots/lab-tank.png docs/screenshots/lab-suite-import.png docs/screenshots/lab-suite-live.png
           if git diff --cached --quiet; then
             echo "Screenshots unchanged"
           else

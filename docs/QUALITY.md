@@ -27,3 +27,6 @@ Que la lógica sea determinista no garantiza equivalencia con PLC Siemens u Omro
 ## Pendientes
 
 Pruebas cruzadas de formatos con proyectos completos de los editores de la Suite, pruebas multicliente Modbus, rendimiento prolongado, CI con métricas de cobertura y bus IPC versionado y autenticado.
+
+## Suite Live v0.4
+Prueba cruzada HTTP ↔ Modbus con socket TCP real y autenticación. Capture screenshots ejecuta el escenario en Chromium y verifica que RUN/MARCHA de la HMI activan la salida del objeto VirtualPLC servidor antes de guardar la captura. No se declara interoperabilidad con una CPU física.

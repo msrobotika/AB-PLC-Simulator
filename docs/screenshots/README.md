@@ -12,3 +12,5 @@ Si aún no existen, ejecutar manualmente la acción Capture screenshots y revisa
 - lab-suite-import.png: carga de un proyecto JSON AB-KOP schema 1.
 
 Se capturan tras comprobar acciones reales en Chromium. Si el workflow falla, no se consideran disponibles.
+
+- lab-suite-live.png: Chromium contra Suite Live; HMI y Modbus comparten una CPU virtual en Node.js. Generada por scripts/capture-suite-live.mjs.
