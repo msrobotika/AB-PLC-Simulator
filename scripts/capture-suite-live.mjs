@@ -10,7 +10,7 @@ try{
   const page=await browser.newPage({viewport:{width:1512,height:1000},deviceScaleFactor:1});
   const errors=[];
   page.on("pageerror",err=>errors.push(err.message));
-  await page.goto(suite.url,{waitUntil:"networkidle"});
+  await page.goto(suite.url,{waitUntil:"domcontentloaded"});
   await page.locator("#lab-connection").filter({hasText:"CPU COMPARTIDA"}).waitFor({timeout:9000});
   await page.locator("#lab-run").click();
   await page.locator("#lab-start").click();
