@@ -1,0 +1,21 @@
+name: Verify engine
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "docs/screenshots/**"
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Static checks and unit tests
+        run: npm run check

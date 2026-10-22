@@ -1,0 +1,43 @@
+name: Capture screenshots
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "docs/screenshots/**"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm run check
+      - run: npm install --no-save --package-lock=false playwright
+      - run: npx playwright install --with-deps chromium
+      - name: Start local application
+        run: |
+          node scripts/serve.mjs > /tmp/ab-plc-server.log 2>&1 &
+          for i in {1..20}; do
+            if curl -fsS http://127.0.0.1:4173/ > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/ab-plc-server.log
+          exit 1
+      - name: Capture browser screenshots
+        run: node scripts/capture.mjs
+      - name: Version actual screenshots
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/screenshots/dashboard.png docs/screenshots/program.png
+          if git diff --cached --quiet; then
+            echo "Screenshots unchanged"
+          else
+            git commit -m "docs: browser screenshots [skip ci]"
+            git push
+          fi
