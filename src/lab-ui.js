@@ -257,6 +257,8 @@ export function mountLabSimulator({ notify = (message)=>window.alert(message) } 
     connectSuiteLive().then(shared=>{
       if(!shared)return;
       remote=shared;cpu=shared;
+      $("global-runtime-mode").textContent="Suite Live activa";
+      $("global-runtime-description").textContent="CPU compartida en localhost · Modbus solo lectura.";
       lastViewScenario="";
       $("lab-rate").value="1";
       $("lab-rate").disabled=true;
@@ -275,6 +277,8 @@ export function mountLabSimulator({ notify = (message)=>window.alert(message) } 
     }).catch(err=>{
       $("lab-connection").textContent="SUITE LIVE · TOKEN O SERVICIO INCORRECTO";
       $("lab-connection").className="lab-disconnected";
+      $("global-runtime-mode").textContent="Suite Live desconectada";
+      $("global-runtime-description").textContent="Verifica el servicio y el token privado.";
       document.querySelectorAll("#lab-root button, #lab-root select, #lab-root input").forEach(el=>{ el.disabled=true; });
       notify("No se pudo conectar a la CPU compartida: "+err.message,"error");
     });
