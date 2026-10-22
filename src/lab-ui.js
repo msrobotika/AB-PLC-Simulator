@@ -275,6 +275,7 @@ export function mountLabSimulator({ notify = (message)=>window.alert(message) } 
     }).catch(err=>{
       $("lab-connection").textContent="SUITE LIVE · TOKEN O SERVICIO INCORRECTO";
       $("lab-connection").className="lab-disconnected";
+      document.querySelectorAll("#lab-root button, #lab-root select, #lab-root input").forEach(el=>{ el.disabled=true; });
       notify("No se pudo conectar a la CPU compartida: "+err.message,"error");
     });
   }
