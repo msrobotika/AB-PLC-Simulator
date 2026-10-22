@@ -4,3 +4,6 @@ node_modules/
 coverage/
 .env
 dist/
+
+ab-plc-scenario.csv
+ab-plc-tank.csv

@@ -1,6 +1,7 @@
 import { PLCEngine, validateProgram } from "./plc-engine.js";
 import { demoProgram, inputLabels, outputLabels } from "./demo-program.js";
 import { mountKopEditor } from "./kop-ui.js";
+import { startLab } from "./lab-launch.js";
 
 const $ = id => document.getElementById(id);
 const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({
@@ -84,7 +85,7 @@ function simulatePackages() {
 }
 
 function tick() {
-  if (!running) return;
+  if (!running || view === "lab") return;
   simulatePackages();
   const result = engine.scan(100);
   for (const change of result.changes) {
@@ -131,7 +132,8 @@ function setView(next) {
   document.querySelectorAll(".view").forEach(section => { section.hidden = section.id !== "view-" + next; });
   document.querySelectorAll(".nav-item").forEach(btn => btn.classList.toggle("active", btn.dataset.view === next));
   const names = {
-    console: ["PANEL DE CONTROL", "PLC Simulation Console", "Un entorno digital para diseñar, ejecutar y verificar lógica de control."],
+    lab: ["SIMULADOR PLC", "Virtual PLC Laboratory", "CPU, bastidor, procesos virtuales, fallos, registros y datos para la Suite."],
+    console: ["DEMO CLÁSICA", "PLC Simulation Console", "Ejemplo introductorio de lógica por scans."],
     program: ["PROGRAMA PLC", "Logic Program Studio", "Edición estructurada, validación y persistencia local."],
     kop: ["EDITOR KOP", "Graphical Ladder Studio", "Edición visual de contactos, bobinas, temporizadores y redes."],
     diagnostics: ["DIAGNÓSTICO", "Runtime Diagnostics", "Inspección de las variables y registro de transiciones."],
@@ -141,6 +143,7 @@ function setView(next) {
   $("breadcrumb-view").textContent = crumb;
   $("view-title").textContent = title + " /";
   $("view-subtitle").textContent = sub;
+  document.querySelector(".heading-actions").style.display = next === "lab" ? "none" : "";
   if (next === "program") renderProgramEditor();
   if (next === "kop") kopEditor?.show();
   renderRuntime();
@@ -346,6 +349,7 @@ function bindEvents() {
 
 loadSaved();
 bindEvents();
+startLab(announce);
 kopEditor = mountKopEditor({
   element: $("kop-editor"),
   getProgram: () => engine.program,
@@ -354,5 +358,5 @@ kopEditor = mountKopEditor({
   notify: announce
 });
 logEvent("AB-PLC Engine inicializado · 100 ms por scan");
-setView("console");
+setView("lab");
 setInterval(tick, 100);

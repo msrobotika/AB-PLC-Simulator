@@ -9,6 +9,7 @@
   <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
   <link rel="stylesheet" href="./src/styles.css">
   <link rel="stylesheet" href="./src/kop.css">
+  <link rel="stylesheet" href="./src/lab.css">
   <script src="./src/app.js" type="module"></script>
 </head>
 <body>
@@ -20,7 +21,8 @@
       </div>
       <div class="workspace-label">WORKSPACE / 01</div>
       <nav class="nav" aria-label="Navegación principal">
-        <button type="button" class="nav-item active" data-view="console"><span>▦</span> Panel de control</button>
+        <button type="button" class="nav-item active" data-view="lab"><span>▣</span> Simulador PLC</button>
+        <button type="button" class="nav-item" data-view="console"><span>▦</span> Demo clásica</button>
         <button type="button" class="nav-item" data-view="program"><span>⌘</span> Programa PLC</button>
         <button type="button" class="nav-item" data-view="kop"><span>⋮</span> Editor KOP</button>
         <button type="button" class="nav-item" data-view="diagnostics"><span>◷</span> Diagnóstico</button>
@@ -32,7 +34,7 @@
           <strong>Modo offline</strong>
           <p>Sin PLC ni red industrial conectados.</p>
         </div>
-        <div class="copyright">AB-PLC v0.2.0<br>© 2026 MS ROBOTIKA</div>
+        <div class="copyright">AB-PLC v0.3.0<br>© 2026 MS ROBOTIKA</div>
       </div>
     </aside>
 
@@ -58,7 +60,8 @@
           </div>
         </div>
 
-        <section id="view-console" class="view">
+        <section id="view-lab" class="view"><div id="lab-root"></div></section>
+        <section id="view-console" class="view" hidden>
           <div class="stats">
             <article class="stat-card">
               <div class="stat-top"><span>ESTADO DEL SISTEMA</span><span class="stat-icon">⏣</span></div>
@@ -221,7 +224,7 @@
           </div>
         </section>
 
-        <footer>MS ROBOTIKA <span>·</span> AB-PLC SIMULATOR <span>·</span> OPEN SOURCE / MIT <span class="footer-right">OFFLINE-FIRST &nbsp; // &nbsp; BUILD 0.2.0</span></footer>
+        <footer>MS ROBOTIKA <span>·</span> AB-PLC SIMULATOR <span>·</span> OPEN SOURCE / MIT <span class="footer-right">OFFLINE-FIRST &nbsp; // &nbsp; BUILD 0.3.0</span></footer>
       </div>
     </main>
   </div>

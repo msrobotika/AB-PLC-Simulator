@@ -1,16 +1,34 @@
 # AB-PLC Simulator
 
-**MS ROBOTIKA · Industrial Labs · v0.2.0**
+**MS ROBOTIKA · Industrial Labs · v0.3.0**
 
 [![CI](https://github.com/msrobotika/AB-PLC-Simulator/actions/workflows/verify.yml/badge.svg)](https://github.com/msrobotika/AB-PLC-Simulator/actions/workflows/verify.yml)
 ![MIT](https://img.shields.io/badge/License-MIT-37dfb3)
 ![JS](https://img.shields.io/badge/Runtime-JavaScript%20ESM-7ab6ef)
 
-**Simulador PLC propio, gratuito y abierto**: ejecuta lógica por ciclos, ofrece monitorización de variables, cinta transportadora virtual, editor JSON, diagnóstico y pruebas.
+**Laboratorio de PLC virtual** con CPU RUN/PAUSE/STOP, exploración determinista, bastidor E/S, dos plantas virtuales (transportador y depósito), simulación de averías, forzado de sensores, pruebas y telemetría. El antiguo editor KOP permanece como módulo auxiliar; **el producto principal es el simulador de PLC**.
 
 [Demo web (cuando GitHub Pages esté habilitado)](https://msrobotika.github.io/AB-PLC-Simulator/)
 
 ## Capturas de la aplicación real
+
+### Consola del simulador de PLC
+
+![CPU y transportador simulado](docs/screenshots/lab-conveyor.png)
+
+### Fallo mecánico e interbloqueo virtual
+
+![Fallo en la línea de transporte](docs/screenshots/lab-fault.png)
+
+### Depósito: llenado y descarga
+
+![Depósito simulado](docs/screenshots/lab-tank.png)
+
+### Importación de programa AB-KOP al PLC
+
+![Importación desde AB-KOP Studio](docs/screenshots/lab-suite-import.png)
+
+### Herramientas complementarias
 
 La acción [Capture screenshots](.github/workflows/screenshots.yml) genera capturas auténticas del navegador y las versiona en docs/screenshots. Si la primera acción todavía no ha terminado, las imágenes aún no estarán disponibles.
 
@@ -24,6 +42,14 @@ La acción [Capture screenshots](.github/workflows/screenshots.yml) genera captu
 
 | Función | Estado |
 |---|---|
+| CPU virtual RUN, PAUSE, STOP y STEP · scan determinista | ✅ |
+| Bastidor digital de 8 DI/8 DO con representación de LED | ✅ |
+| Escenarios transportador, depósito y bastidor libre | ✅ |
+| Inyección de fallos, forzado virtual de entradas y eventos | ✅ |
+| Historial de proceso, tendencias y exportación de telemetría | ✅ |
+| Importación AB-KOP schema 1 / AB-SCL cuando exporta AB-KOP | ✅ |
+| Contrato de intercambio Suite JSON y CSV para AB-BI | ✅ |
+| Preview de registros Modbus en memoria (sin servidor) | ✅ |
 | Escaneo determinista, entradas/salidas y marcas | ✅ |
 | Contactos NO/NC, AND/OR/NOT | ✅ |
 | Coil, SET, RESET, TON, TOF, CTU | ✅ |
@@ -86,6 +112,10 @@ index.html                Interfaz
 src/
   app.js                  UI, interacción y cinta virtual
   styles.css              Diseño responsive
+  plant-runtime.js        CPU virtual y modelos deterministas de proceso
+  lab-ui.js/lab-markup.js Consola de simulación PLC
+  suite-contract.js       Contrato de intercambio y CSV
+  kop-import.js           Adaptador real desde AB-KOP Studio
   kop-model.js            Conversión AST ↔ redes KOP visuales
   kop-ui.js               Edición de redes, historial, renderizado
   kop.css                 Estilos para diagramas KOP
@@ -97,7 +127,7 @@ docs/                     Arquitectura, seguridad, hoja de ruta, capturas
 .github/workflows/        Verificación, capturas y Pages
 ~~~
 
-Más detalles en [Editor KOP](docs/KOP_EDITOR.md), [Arquitectura](docs/ARCHITECTURE.md), [Hoja de ruta](docs/ROADMAP.md) y [Seguridad](docs/SAFETY.md).
+Más detalles en [Laboratorio PLC](docs/PLC_LAB.md), [Interoperabilidad Suite](docs/SUITE_PROTOCOL.md), [Editor KOP](docs/KOP_EDITOR.md), [Arquitectura](docs/ARCHITECTURE.md), [Hoja de ruta](docs/ROADMAP.md) y [Seguridad](docs/SAFETY.md).
 
 **Aviso:** uso educativo y de simulación. No controla máquinas, no implementa parada de emergencia física ni certifica seguridad funcional.
 

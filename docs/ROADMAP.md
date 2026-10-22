@@ -26,3 +26,16 @@
 - [ ] API pública estable, proyectos versionados y pruebas de conformidad por escenario
 
 Estas fases son propuestas, **no funcionalidades presentes**. Cualquier control industrial real requiere una revisión de seguridad independiente.
+
+
+## v0.3 · Simulación PLC y puente Suite
+- [x] CPU virtual RUN/PAUSE/STOP/STEP y reset
+- [x] Rack de señales virtuales y banco de fallos
+- [x] Transportador y depósito deterministas
+- [x] Importación AB-KOP Studio schema 1 a direcciones I/Q/T propias
+- [x] CSV de telemetría para AB-BI Studio y JSON Suite v1
+- [x] Mapa de registros Modbus preview sin red
+- [ ] Sincronización bidireccional entre editores y CPU
+- [ ] Servidor de solo lectura Modbus TCP local, con habilitación explícita
+- [ ] Bus IPC autenticado para Suite y adaptador GRAFCET
+- [ ] Validación de equivalencia total entre motores de diferentes herramientas
