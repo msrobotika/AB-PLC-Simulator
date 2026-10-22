@@ -1,0 +1,38 @@
+name: Informe de fallo
+description: Comunicar un error reproducible
+title: "[Bug] "
+body:
+  - type: dropdown
+    id: component
+    attributes:
+      label: Componente
+      options:
+        - CPU virtual
+        - Procesos y sensores
+        - Modbus TCP
+        - Adaptadores Suite
+        - Interfaz
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Pasos para reproducir
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Resultado esperado
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Resultado observado
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: SO, Node, navegador y versión de la app

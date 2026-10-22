@@ -1,0 +1,29 @@
+name: Propuesta de función
+description: Solicitar capacidad o integración de la Suite
+title: "[Feature] "
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: Necesidad funcional
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Área
+      options:
+        - CPU virtual
+        - Modelos de planta
+        - Protocolos
+        - Adaptadores AB-KOP y AB-SCL
+        - Adaptador AB-GRAFCET
+        - Integración AB-BI y AB-Vision
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Criterios de aceptación y pruebas
+    validations:
+      required: true
