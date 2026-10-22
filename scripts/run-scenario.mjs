@@ -8,14 +8,17 @@ const args=process.argv.slice(2);
 const option=name=>{const i=args.indexOf(name);return i>=0?args[i+1]:null;};
 try {
   const scenarioFile=option("--scenario");
-  const spec=scenarioFile?JSON.parse(await readFile(scenarioFile,"utf8")):sampleScenario;
+  const spec=scenarioFile?JSON.parse(await readFile(scenarioFile,"utf8")):JSON.parse(JSON.stringify(sampleScenario));
   const kopPath=option("--ab-kop");
   const nativePath=option("--program");
   if(kopPath&&nativePath)throw new Error("Usa solo --ab-kop o --program");
   let program;
   if(kopPath) {program=importABKop(JSON.parse(await readFile(kopPath,"utf8"))).program;
+    if(!scenarioFile){spec.events=[];spec.scans=100;}
     spec.scenario="rack";}
-  if(nativePath) {program=JSON.parse(await readFile(nativePath,"utf8"));spec.scenario="rack";}
+  if(nativePath) {program=JSON.parse(await readFile(nativePath,"utf8"));
+    if(!scenarioFile){spec.events=[];spec.scans=100;}
+    spec.scenario="rack";}
   const run=runScenario(spec,program);
   const out=option("--csv")??"ab-plc-scenario.csv";
   await writeFile(out,telemetryCSV(run.samples),"utf8");

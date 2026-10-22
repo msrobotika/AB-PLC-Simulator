@@ -25,3 +25,18 @@ test("fuerza y liberación de sensor durante un escenario",()=>{
  assert.equal(r.samples[0].cpu.inputs["I0.3"],true);
  assert.equal(r.samples[5].forces["I0.3"],undefined);
 });
+
+test("PAUSE detiene el tiempo hasta RESUME; STEP realiza un único scan",()=>{
+ const r=runScenario({schema:1,scenario:"rack",scans:10,events:[
+   {at:2,action:"pause"},{at:4,action:"step"},{at:6,action:"resume"}
+ ]});
+ assert.equal(r.snapshot.scan,7);
+ assert.equal(r.snapshot.simulatedMs,700);
+});
+test("STOP resetea el runtime y no acumula scans hasta reanudar",()=>{
+ const r=runScenario({schema:1,scenario:"rack",scans:8,events:[
+   {at:2,action:"stop"},{at:5,action:"resume"}
+ ]});
+ assert.equal(r.snapshot.scan,5);
+ assert.equal(r.snapshot.mode,"RUN");
+});

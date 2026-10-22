@@ -1,7 +1,7 @@
 /** Reproducible testbench for virtual PLCs, independent of the browser. */
 import { VirtualPLC } from "./plant-runtime.js";
 
-const actions = ["start","stop-input","estop","set-input","force","fault","resume","pause","stop"];
+const actions = ["start","stop-input","estop","set-input","force","fault","resume","pause","stop","step"];
 function requireScenario(spec) {
   if(!spec || spec.schema!==1 || !["conveyor","tank","rack"].includes(spec.scenario))
     throw new Error("Escenario schema 1 inválido");
@@ -37,9 +37,10 @@ export function runScenario(spec, program) {
         case "resume":cpu.setMode("RUN");break;
         case "pause":cpu.setMode("PAUSE");break;
         case "stop":cpu.setMode("STOP");break;
+        case "step":cpu.tick(100,true);break;
       }
     }
-    cpu.tick(100,true);
+    cpu.tick(100);
   }
   return { snapshot:cpu.snapshot(),samples:cpu.samples,events:cpu.events };
 }

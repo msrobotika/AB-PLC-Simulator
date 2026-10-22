@@ -132,3 +132,13 @@ Más detalles en [Laboratorio PLC](docs/PLC_LAB.md), [Interoperabilidad Suite](d
 **Aviso:** uso educativo y de simulación. No controla máquinas, no implementa parada de emergencia física ni certifica seguridad funcional.
 
 **Licencia:** [MIT](LICENSE). © 2026 MS ROBOTIKA.
+
+## Escenarios ejecutables sin navegador
+
+Reproducibles desde Node.js:
+
+    npm run sim:demo
+    npm run sim:tank
+    node scripts/run-scenario.mjs --scenario examples/conveyor-with-fault.json --csv trace.csv
+
+El simulador no necesita ejecutar editores para procesar scans. Lee [el laboratorio](docs/PLC_LAB.md) y [el contrato Suite](docs/SUITE_PROTOCOL.md).

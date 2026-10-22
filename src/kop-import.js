@@ -30,7 +30,7 @@ export function importABKop(source, scanMs = 100) {
   outputs.forEach(([name],i)=> { symbols[name] = "Q0."+i; });
   const timers = [...new Set(source.rungs.filter(r=>r.operation==="TON").map(r=>r.target))];
   timers.forEach((name,i)=> {
-    assert(ident.test(name) && !names.has(name), "Símbolo TON inválido o ambiguo");
+    assert(ident.test(name) && !names.has(name) && !names.has(name+"_DONE"), "Símbolo TON inválido o ambiguo");
     symbols[name+"_DONE"] = "T"+i;
   });
   const ids = new Set();

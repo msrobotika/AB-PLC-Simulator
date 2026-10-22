@@ -229,6 +229,7 @@ export class VirtualPLC {
 
   tick(dtMs = 100, step = false) {
     if (!step && this.mode !== "RUN") return null;
+    if (step && this.mode === "STOP") this.setMode("PAUSE");
     if (!Number.isInteger(dtMs) || dtMs < 1 || dtMs > 1000) throw new Error("Intervalo de scan inválido");
     const previousQ = { ...this.engine.outputs };
     this.plant.advance(dtMs, previousQ, this.faults);

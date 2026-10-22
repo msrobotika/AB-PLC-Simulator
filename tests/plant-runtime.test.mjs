@@ -127,3 +127,18 @@ test("formato externo inválido se rechaza sin evaluación arbitraria",()=>{
   assert.throws(()=>cpu.setFault("laser",true),/disponible/);
   assert.throws(()=>cpu.forceInput("Q0.0",true),/inválida/);
 });
+
+test("STEP desde STOP pasa a PAUSE y ejecuta una única red",()=>{
+ const cpu=new VirtualPLC("rack");
+ cpu.tick(100,true);
+ assert.equal(cpu.mode,"PAUSE");
+ assert.equal(cpu.scanNumber,1);
+ cpu.tick(100);
+ assert.equal(cpu.scanNumber,1);
+});
+test("el importador evita símbolos TON ambiguos",()=>{
+ const src={schema:1,name:"Conflicto",inputs:{T_DONE:false},outputs:{OUT:false},
+ rungs:[{id:"R1",name:"Temporizador",operation:"TON",target:"T",preset:2,
+ branches:[[{kind:"NO",variable:"T_DONE"}]]}]};
+ assert.throws(()=>importABKop(src),/ambiguo/);
+});
