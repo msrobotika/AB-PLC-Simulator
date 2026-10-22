@@ -39,3 +39,8 @@ Estas fases son propuestas, **no funcionalidades presentes**. Cualquier control 
 - [x] Servidor de solo lectura Modbus TCP en 127.0.0.1, iniciado manualmente por CLI
 - [ ] Bus IPC autenticado para Suite y adaptador GRAFCET
 - [ ] Validación de equivalencia total entre motores de diferentes herramientas
+
+## Puente Suite · hitos en marcha
+- [x] Modbus TCP localhost FC01–FC04 (solo lectura, instancia separada)
+- [ ] Enlazar la CPU del navegador con la CPU expuesta por TCP
+- [ ] Conectores verificados mediante pruebas cruzadas con AB-Modbus Studio

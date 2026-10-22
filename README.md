@@ -142,3 +142,28 @@ Reproducibles desde Node.js:
     node scripts/run-scenario.mjs --scenario examples/conveyor-with-fault.json --csv trace.csv
 
 El simulador no necesita ejecutar editores para procesar scans. Lee [el laboratorio](docs/PLC_LAB.md) y [el contrato Suite](docs/SUITE_PROTOCOL.md).
+
+
+## Conexión en vivo: AB-PLC Simulator → AB-Modbus Studio
+
+Para disponer de un PLC simulado accesible mediante Modbus TCP desde **AB-Modbus Studio**, abre una consola en la carpeta del proyecto (Node.js 20+) y ejecuta:
+
+    npm run sim:modbus
+
+En AB-Modbus Studio configura **Host 127.0.0.1, puerto 1502, Unit ID 1**. Las funciones compatibles son:
+- **FC01** · coils 0–2: Q0.0, Q0.1, Q0.2.
+- **FC02** · entradas digitales 0–3: I0.0, I0.1, I0.2, I0.3.
+- **FC03** · holding registers 0–4: scan, tiempo/100 ms, CV, AI0×100, variable de proceso×100.
+- **FC04** · input registers 0–1: AI0×100, variable de proceso×100.
+
+Las funciones de escritura se **rechazan** (excepción Modbus 01). El servidor solo escucha en **127.0.0.1**, sin PLC físico ni acceso a la red de planta. La CPU del servidor es una instancia independiente de la sesión web; aún no se sincronizan entre sí. Se detiene con Ctrl+C.
+
+Otra demostración física virtual:
+
+    node scripts/serve-modbus.mjs --tank
+
+El código del protocolo está en [src/modbus-tcp.js](src/modbus-tcp.js), con pruebas de socket TCP real en [tests/modbus-tcp.test.mjs](tests/modbus-tcp.test.mjs) y detalles en [docs/SUITE_PROTOCOL.md](docs/SUITE_PROTOCOL.md).
+
+## Alcance y profesionalización
+
+Documentos de estado: [PROJECT_STATUS](docs/PROJECT_STATUS.md), [CHANGELOG](CHANGELOG.md), [ROADMAP](docs/ROADMAP.md), [LICENCIA](LICENSE) y [SEGURIDAD](docs/SAFETY.md). El proyecto cuenta con escenarios deterministas, CI y capturas de navegador. Las próximas integraciones están descritas como tareas en [Issues](https://github.com/msrobotika/AB-PLC-Simulator/issues), no como funciones terminadas.
