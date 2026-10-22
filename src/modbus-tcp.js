@@ -59,8 +59,8 @@ export function createModbusLabServer({simulator,host="127.0.0.1",port=1502}={})
   if(!simulator || typeof simulator.snapshot!=="function")
     throw new Error("Se requiere CPU virtual");
   if(host!=="127.0.0.1") throw new Error("Solo localhost por motivos de seguridad");
-  if(!Number.isInteger(port) || port < 1024 || port > 65535)
-    throw new Error("Puerto inválido (1024–65535)");
+  if(!Number.isInteger(port) || port < 0 || port > 65535)
+    throw new Error("Puerto inválido (0 para pruebas o 1–65535)");
   const server=createServer(socket=>{
     socket.setNoDelay(true);
     socket.setTimeout(15000);

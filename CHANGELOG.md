@@ -4,7 +4,7 @@
 - Núcleo de CPU virtual, escenarios transportador y depósito.
 - Modos RUN/PAUSE/STOP/STEP, rack digital, fallos, forzado, históricos y gráficos.
 - Importador de proyectos AB-KOP schema 1 con mapping a direcciones virtuales.
-- Exportación CSV/JSON Suite v1, mapa Modbus preview de solo lectura.
+- Exportación CSV/JSON Suite v1, mapa Modbus preview y puente TCP localhost FC01–04 de solo lectura.
 - Escenarios reproducibles por CLI y tests automáticos.
 - Página de simulador como inicio y KOP disponible como herramienta secundaria.
 - Capturas de navegador del simulador y de la importación Suite.

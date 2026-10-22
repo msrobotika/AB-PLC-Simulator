@@ -19,6 +19,6 @@ Un bus de comunicación Suite, adaptadores GRAFCET/Vision, servidores Modbus TCP
 ## Riesgos y próximos pasos
 1. Versionar el contrato de formatos y diseñar SDK AB-Suite Core independiente.
 2. Completar pruebas cruzadas contra el motor real de AB-KOP para todos los casos admitidos.
-3. Publicar Modbus TCP local de lectura solo cuando existan pruebas de protocolo y autorizaciones.
+3. Mantener pruebas de FC01–04 del puente Modbus local; falta sincronización de CPU entre navegador y proceso Node.
 4. Medir rendimiento y memoria del simulador bajo escenarios de larga duración.
 5. Diseñar una API de procesos y módulos de periféricos extensibles.

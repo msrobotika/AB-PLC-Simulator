@@ -29,3 +29,7 @@ Ejemplo de escenario reproducible: examples/conveyor-with-fault.json. El runner 
 ## Límites verificables
 
 La simulación implementa semántica propia, no instrucciones binariamente compatibles con Siemens, Omron o Codesys. No existe E/S física, precisión certificada, funcionalidad de seguridad real ni modelo termohidráulico o mecánico validado. Los mandos de emergencia son digitales virtuales y no deben confundirse con una parada de seguridad. El uso es educativo y de laboratorio exclusivamente.
+
+## Puente Modbus en vivo
+
+Inicia npm run sim:modbus en una consola independiente para simular un PLC accesible por TCP exclusivamente en localhost. AB-Modbus Studio puede leer FC01–FC04 en 127.0.0.1:1502, Unit ID 1. Los datos proceden de un nuevo proceso virtual autónomo, no de la misma sesión del navegador. Sin escritura ni hardware.

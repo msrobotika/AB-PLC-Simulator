@@ -36,6 +36,6 @@ Estas fases son propuestas, **no funcionalidades presentes**. Cualquier control 
 - [x] CSV de telemetría para AB-BI Studio y JSON Suite v1
 - [x] Mapa de registros Modbus preview sin red
 - [ ] Sincronización bidireccional entre editores y CPU
-- [ ] Servidor de solo lectura Modbus TCP local, con habilitación explícita
+- [x] Servidor de solo lectura Modbus TCP en 127.0.0.1, iniciado manualmente por CLI
 - [ ] Bus IPC autenticado para Suite y adaptador GRAFCET
 - [ ] Validación de equivalencia total entre motores de diferentes herramientas

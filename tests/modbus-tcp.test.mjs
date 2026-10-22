@@ -46,11 +46,31 @@ test("MBAP malformed se rechaza, unit ID desconocido recibe excepción",()=>{
  const other=adu(3);other[6]=2;
  assert.deepEqual([...modbusResponse(other,m.snapshot()).subarray(7)],[0x83,2]);
 });
-test("servidor real solo en 127.0.0.1 responde FC03 sin permitir escrituras",async()=>{
+test("servidor real localhost: FC03 responde y FC06 deniega escritura",async()=>{
  const m=plc();
- const srv=await createModbusLabServer({simulator:m,port:0}).catch(()=>null);
- // createModbusLabServer rejects port 0 intentionally. Use a safe ephemeral port assigned
- // externally by a listener to avoid colliding with other tests.
- assert.equal(srv,null);
+ const srv=await createModbusLabServer({simulator:m,port:0});
+ const assignedPort=srv.address().port;
+ const exchange=request=>new Promise((resolve,reject)=>{
+   const sock=connect({host:"127.0.0.1",port:assignedPort},()=>sock.write(request));
+   const chunks=[];
+   sock.setTimeout(3000,()=>sock.destroy(new Error("Timeout Modbus")));
+   sock.on("data",data=>{
+     chunks.push(data);
+     const total=Buffer.concat(chunks);
+     if(total.length>=7 && total.length>=6+total.readUInt16BE(4)){
+       sock.destroy();resolve(total);
+     }
+   });
+   sock.on("error",reject);
+ });
+ try {
+   const read=await exchange(adu(3,0,2,145));
+   assert.equal(read.readUInt16BE(0),145);
+   assert.equal(read[7],3);
+   assert.equal(read[8],4);
+   assert.equal(read.readUInt16BE(9),1);
+   const write=await exchange(adu(6,0,1,146));
+   assert.deepEqual([...write.subarray(7)],[0x86,1]);
+ } finally {await new Promise(resolve=>srv.close(resolve));}
  await assert.rejects(createModbusLabServer({simulator:m,host:"0.0.0.0",port:1502}),/localhost/);
 });

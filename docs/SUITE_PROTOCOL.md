@@ -8,7 +8,7 @@
 | AB-SCL Studio → AB-KOP JSON | AB-PLC Simulator | Importa el JSON AB-KOP generado, no SCL nativo |
 | AB-PLC Simulator | AB-BI Studio | Exportación CSV tabular |
 | AB-PLC Simulator | Suite futura | Contrato JSON msrobotika.suite.telemetry.v1 |
-| AB-PLC Simulator | AB-Modbus Studio | Solo preview de mapa de registros, sin TCP |
+| AB-PLC Simulator | AB-Modbus Studio | **Puente TCP local de solo lectura (FC01–04)**, lanzado por separado |
 | AB-GRAFCET Studio | AB-PLC Simulator | Pendiente de adaptador |
 | AB-Vision Inspector | AB-PLC Simulator | Pendiente de adaptador |
 
@@ -39,3 +39,14 @@ Mapa de registros con direcciones de base cero:
 ## Arquitectura de Suite pendiente
 
 Propuesta: AB-Suite Core alojará el contrato compartido y un bus IPC local versionado. Los editores emitirán proyectos mediante adaptadores independientes; AB-PLC Simulator ejecutará la CPU y planta virtual; AB-Modbus Studio supervisará por lectura; AB-BI Studio analizará históricos; AB-Vision Inspector aportará resultados virtuales de inspección; AB-GRAFCET Studio aportará secuencias transformadas bajo validación. La comunicación en vivo, autenticación y validación entre aplicaciones aún NO están implementadas.
+
+
+## Puente Modbus TCP local implementado
+
+Archivo: src/modbus-tcp.js. Arranque: npm run sim:modbus (Node.js 20+). Se enlaza únicamente a 127.0.0.1, puerto 1502, Unit ID 1 y utiliza el controlador virtual como fuente de los registros. Soporta reensamblado de tramas MBAP parciales, peticiones sucesivas y excepciones de Modbus en direcciones o cantidades inválidas. FC01–FC04 son las únicas funciones leíbles. Toda función de escritura responde con excepción 01 (Illegal Function), sin cambiar memorias.
+
+FC04: Input Register 0 = AI0 × 100 y 1 = variable de proceso × 100. Todo es simulado y en memoria. El proceso de servidor es independiente de la pestaña web del simulador: no sincroniza aún un mismo estado de CPU con el navegador.
+
+Comprobar en AB-Modbus Studio: host 127.0.0.1, puerto 1502, Unit ID 1, leer FC03 dirección 0 longitud 5. Arrancar el puente y mantener abierta su consola. Las pruebas unitarias incluyen una conexión TCP real por el bucle local y una escritura rechazada.
+
+**Seguridad**: este servidor no enlaza a IP de LAN y no crea cliente de PLC físico. No exponerlo mediante port-forwarding ni usarlo como sistema de automatización de planta.

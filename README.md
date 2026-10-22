@@ -49,7 +49,7 @@ La acción [Capture screenshots](.github/workflows/screenshots.yml) genera captu
 | Historial de proceso, tendencias y exportación de telemetría | ✅ |
 | Importación AB-KOP schema 1 / AB-SCL cuando exporta AB-KOP | ✅ |
 | Contrato de intercambio Suite JSON y CSV para AB-BI | ✅ |
-| Preview de registros Modbus en memoria (sin servidor) | ✅ |
+| Mapa Modbus in-memory en navegador; puente TCP local FC01–04 mediante Node | ✅ |
 | Escaneo determinista, entradas/salidas y marcas | ✅ |
 | Contactos NO/NC, AND/OR/NOT | ✅ |
 | Coil, SET, RESET, TON, TOF, CTU | ✅ |
