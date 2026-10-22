@@ -72,5 +72,5 @@ test("servidor real localhost: FC03 responde y FC06 deniega escritura",async()=>
    const write=await exchange(adu(6,0,1,146));
    assert.deepEqual([...write.subarray(7)],[0x86,1]);
  } finally {await new Promise(resolve=>srv.close(resolve));}
- await assert.rejects(createModbusLabServer({simulator:m,host:"0.0.0.0",port:1502}),/localhost/);
+ assert.throws(() => createModbusLabServer({simulator:m,host:"0.0.0.0",port:1502}),/localhost/);
 });
