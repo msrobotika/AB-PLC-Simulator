@@ -94,3 +94,40 @@ test("Suite Live cambia de proceso sobre la misma CPU y no admite hardware exter
   assert.throws(()=>suiteLiveCommand(cpu,{command:"scenario",scenario:"safety-plc"}),/desconocido/);
   assert.throws(()=>suiteLiveCommand(cpu,{command:"input",tag:"Q0.0",value:true}),/inválida/);
 });
+
+
+test("AB-KOP Studio JSON → HTTP Suite Live → CPU → Modbus comparte la misma salida",async()=>{
+  const suite=await startSuiteLive({httpPort:0,modbusPort:0,clock:false});
+  const host="http://127.0.0.1:"+suite.httpPort;
+  const headers={Authorization:"Bearer "+suite.token,"Content-Type":"application/json"};
+  const command=async(value)=>{
+    const response=await fetch(host+"/api/live/command",{
+      method:"POST",headers,body:JSON.stringify(value)
+    });
+    assert.equal(response.status,200);
+    return response.json();
+  };
+  try{
+    const project={schema:1,name:"Circuito externo AB-KOP",
+      inputs:{START:false,PERMISO:true},outputs:{MOTOR:false},
+      rungs:[{id:"R1",name:"Arranque externo",
+        operation:"COIL",target:"MOTOR",branches:[[
+          {kind:"NO",variable:"START"},{kind:"NO",variable:"PERMISO"}
+        ]]}]
+    };
+    const imported=await command({command:"import-kop",project});
+    assert.equal(imported.imported.symbols.START,"I0.0");
+    assert.equal(imported.imported.symbols.MOTOR,"Q0.0");
+    assert.equal(imported.state.snapshot.scenario,"rack");
+    await command({command:"mode",mode:"RUN"});
+    await command({command:"input",tag:"I0.0",value:true});
+    await command({command:"step"});
+    assert.equal(suite.cpu.engine.read("Q0.0"),true);
+    const modbus=await requestModbus(suite.modbusPort,1,1);
+    assert.equal(modbus[9]&1,1);
+    await command({command:"input",tag:"I0.0",value:false});
+    await command({command:"step"});
+    const off=await requestModbus(suite.modbusPort,1,1);
+    assert.equal(off[9]&1,0);
+  }finally{await suite.close();}
+});
