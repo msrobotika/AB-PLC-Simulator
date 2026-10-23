@@ -1,13 +1,24 @@
-# AB-Suite Core
+# AB-Suite Core independiente
 
-El paquete independiente reside inicialmente en packages/ab-suite-core; aún no existe un repositorio público separado msrobotika/AB-Suite-Core. Tiene exports, tests y estructura propia para extraerlo más adelante.
+El bus de interoperabilidad reside en el repositorio público:
 
-Desde la raíz ejecuta:
+https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n
 
+AB-PLC Simulator lo consume mediante una dependencia Git fijada a una revisión. El código del bus ya no se mantiene dentro del simulador.
+
+## Instalación en el simulador
+
+    npm install
     npm run suite:core
 
-Activa una CPU VirtualPLC compartida por web y Modbus, más el bus SSE con telemetría. Todo enlazado únicamente a 127.0.0.1. Credenciales independientes de sesión.
+Se inicia una CPU virtual común a HMI (127.0.0.1:4173), Modbus read-only (127.0.0.1:1502) y AB-Suite Core HTTP/SSE (127.0.0.1:4175). El servidor imprime tokens de sesión por aplicación.
 
-Consulta packages/ab-suite-core/README.md, packages/ab-suite-core/docs/ARCHITECTURE.md y packages/ab-suite-core/docs/INTEGRATIONS.md.
+## Pruebas
 
-Integración efectiva: AB-PLC Simulator y bus Core. Resto de aplicaciones pendientes de adaptador nativo. Sin E/S reales.
+    npm run check
+
+tests/suite-core-integration.test.mjs importa directamente el paquete autónomo y verifica comandos HTTP, datos de la misma CPU y lecturas Modbus junto al histórico de eventos del bus.
+
+## Alcance
+
+El bus es solo local, con eventos en memoria y tokens efímeros. Los adaptadores de Vision, GRAFCET y BI se versionan por separado. No hay maquinaria real, ni persistencia después de reiniciar, ni control de seguridad industrial.

@@ -62,3 +62,7 @@ El modo anterior npm run sim:modbus conserva su CPU independiente y no sincroniz
 Se ha añadido el paquete packages/ab-suite-core, un bus HTTP/SSE independiente. El proceso npm run suite:core une la CPU Suite Live y el bus mediante SuitePLCBridge: snapshots plc.snapshot y cambios plc.status con secuencias y trazabilidad.
 
 Los contratos para otros editores existen en el SDK, pero no se afirma conexión real de AB-BI, Vision o GRAFCET; siguen requiriendo sus respectivos adaptadores. Las claves son efímeras por aplicación y el bus escucha solo en 127.0.0.1. El bus no acepta comandos hacia PLC, ni E/S industriales.
+
+## Paquete independiente (v0.1)
+
+El código fuente primario de AB-Suite Core está ahora en https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n, incluido mediante una dependencia Git fijada a commit. AB-PLC Simulator conserva exclusivamente el adaptador de composición scripts/serve-suite-core.mjs y las pruebas de integración; las fuentes del bus dejaron de estar duplicadas en packages/ab-suite-core.

@@ -193,3 +193,12 @@ Seguridad: ambos servidores escuchan solo en localhost; la API web requiere toke
 Arranca el simulador web (localhost:4173), Modbus TCP de solo lectura (localhost:1502) y el bus Suite Core HTTP/SSE (localhost:4175), todos sobre la misma CPU VirtualPLC. El bus añade contratos versionados, tokens por aplicación, replay de eventos y un SDK JavaScript reutilizable.
 
 Consulta [guía general](docs/AB_SUITE_CORE.md) y [README técnico del paquete](packages/ab-suite-core/README.md). **Integración ya probada**: telemetría del PLC virtual al bus. **Pendiente**: adaptadores nativos AB-BI, AB-GRAFCET y AB-Vision, persistencia y distribución en red; no se controla hardware físico.
+
+## AB-Suite Core como dependencia externa versionada
+
+AB-Suite Core ya tiene [repositorio independiente](https://github.com/msrobotika/AB-Suite-Core-arquitectura-de-integraci-n). Para ejecutar el modo integrado instala la dependencia de Git fijada a un commit comprobado (el simulador **no** publica copias del bus):
+
+    npm install
+    npm run suite:core
+
+El simulador conserva su CPU, HMI y Modbus; el paquete externo contiene el bus, los contratos, SDK y puente. La integración se comprueba en tests/suite-core-integration.test.mjs. Es código de laboratorio y no permite controlar equipos industriales.

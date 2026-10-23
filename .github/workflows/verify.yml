@@ -30,5 +30,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
+      - name: Install pinned AB-Suite Core dependency
+        run: npm install --ignore-scripts --no-audit --no-fund
       - name: Syntax, unit and Modbus TCP loopback tests
         run: npm run check
