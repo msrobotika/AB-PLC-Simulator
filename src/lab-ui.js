@@ -7,6 +7,7 @@ import { suiteCatalog, telemetryCSV, telemetryEnvelope, modbusPreview, downloadT
 import { importABKop } from "./kop-import.js";
 import { validateProgram } from "./plc-engine.js";
 import { connectSuiteLive } from "./suite-live-client.js";
+import { guideForSnapshot } from "./lab-onboarding.js";
 
 const $ = id => document.getElementById(id);
 const esc = value => String(value ?? "").replace(/[&<>"']/g, ch => ({
@@ -112,6 +113,7 @@ export function mountLabSimulator({ notify = (message)=>window.alert(message) } 
   let rate = 1;
   let importInfo = null;
   let paintCounter = 0;
+  let lastGuideKey = "";
 
   function outputDownload(content,name,type) {
     downloadText(content,name,type);
@@ -141,6 +143,19 @@ export function mountLabSimulator({ notify = (message)=>window.alert(message) } 
     $("lab-mode").className = f.mode === "RUN" ? "lab-green" : f.mode === "PAUSE" ? "lab-amber" : "lab-red";
     $("lab-fault-count").textContent = Object.values(f.faults).filter(Boolean).length +
       " / " + Object.keys(f.forces).length;
+    const guide = guideForSnapshot(f);
+    const guideKey = guide.step + "|" + guide.title + "|" + guide.description;
+    if (guideKey !== lastGuideKey) {
+      lastGuideKey = guideKey;
+      $("lab-guide-progress").textContent = "Paso " + guide.step + " de 4";
+      $("lab-guide-title").textContent = guide.title;
+      $("lab-guide-description").textContent = guide.description;
+      document.querySelectorAll("[data-lab-guide-step]").forEach(node => {
+        const step = Number(node.dataset.labGuideStep);
+        node.classList.toggle("is-current", step === guide.step);
+        node.classList.toggle("is-done", step < guide.step);
+      });
+    }
     $("lab-plant-name").textContent = labels.name;
     $("lab-process-subtitle").textContent = labels.process;
     $("lab-rack-panel").innerHTML = cpuRack(f);
