@@ -56,3 +56,9 @@ Comprobar en AB-Modbus Studio: host 127.0.0.1, puerto 1502, Unit ID 1, leer FC03
 Una única CPU VirtualPLC se aloja en el proceso Node, compartida por (1) servidor HTTP local de HMI autenticada y (2) servidor Modbus TCP FC01–04 de solo lectura. La HMI llama a /api/live/state y /api/live/command con Bearer token de 256 bits generado al inicio, introducido mediante fragmento de URL (no enviado al servidor en la navegación). Se valida Host, Origin y Sec-Fetch-Site. Ejecutar npm run suite:live.
 
 El modo anterior npm run sim:modbus conserva su CPU independiente y no sincroniza la pestaña web. Para estado compartido usa Suite Live. No existe todavía bus IPC general ni conexión a PLC físico.
+
+## AB-Suite Core v0.1 (módulo nuevo)
+
+Se ha añadido el paquete packages/ab-suite-core, un bus HTTP/SSE independiente. El proceso npm run suite:core une la CPU Suite Live y el bus mediante SuitePLCBridge: snapshots plc.snapshot y cambios plc.status con secuencias y trazabilidad.
+
+Los contratos para otros editores existen en el SDK, pero no se afirma conexión real de AB-BI, Vision o GRAFCET; siguen requiriendo sus respectivos adaptadores. Las claves son efímeras por aplicación y el bus escucha solo en 127.0.0.1. El bus no acepta comandos hacia PLC, ni E/S industriales.
