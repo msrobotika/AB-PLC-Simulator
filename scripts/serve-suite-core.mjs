@@ -4,8 +4,7 @@
  * same VirtualPLC -> HTTP HMI / Modbus TCP read-only / Suite Core SSE bus.
  */
 import { startSuiteLive } from "../src/suite-live-server.js";
-import { startSuiteCore } from "../packages/ab-suite-core/src/server.js";
-import { SuitePLCBridge } from "../packages/ab-suite-core/src/plc-bridge.js";
+import { startSuiteCore, SuitePLCBridge } from "@msrobotika/ab-suite-core";
 
 const args=process.argv.slice(2);
 const option=(flag,fallback)=>{

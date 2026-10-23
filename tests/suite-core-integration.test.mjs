@@ -1,10 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { VirtualPLC } from "../../../src/plant-runtime.js";
-import { startSuiteLive } from "../../../src/suite-live-server.js";
-import { startSuiteCore } from "../src/server.js";
-import { SuiteClient } from "../src/client.js";
-import { SuitePLCBridge } from "../src/plc-bridge.js";
+import { VirtualPLC } from "../src/plant-runtime.js";
+import { startSuiteLive } from "../src/suite-live-server.js";
+import { startSuiteCore, SuiteClient, SuitePLCBridge } from "@msrobotika/ab-suite-core";
 import { connect } from "node:net";
 
 async function coil(port){
