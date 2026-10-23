@@ -18,7 +18,7 @@ test("publica y consulta eventos vía HTTP autenticado",async()=>{
     assert.equal(history.events.length,1);
     assert.equal(history.events[0].data.image_id,"frame-sha-001");
     assert.equal((await monitor.health()).sequence,1);
-    await assert.rejects(()=>monitor.publish(vEvent),/sin permiso/);
+    assert.throws(()=>monitor.publish(vEvent),/sin permiso/);
   }finally{await core.close();}
 });
 test("bloquea autenticación incorrecta, suplantación, origen no confiable y escritura no soportada",async()=>{
