@@ -1,0 +1,36 @@
+name: Clean checkout / functional acceptance
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  smoke:
+    name: Clean checkout / ${{ matrix.os }} Node 22
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Record platform and exact revision
+        shell: bash
+        run: |
+          node --version
+          npm --version
+          git rev-parse HEAD
+      - name: NO npm install — functional smoke from a clean checkout
+        run: node --test tests/acceptance-smoke.test.mjs
+      - name: Probe public Pages (informational; NO_VERIFICADO on inaccessible)
+        if: matrix.os == 'ubuntu-latest'
+        run: node scripts/probe-public-demo.mjs
+      - name: Install pinned external bus dependency
+        run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Test entire engine, deterministic plant, contracts and loopback
+        run: npm run check

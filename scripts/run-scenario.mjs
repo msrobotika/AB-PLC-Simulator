@@ -4,6 +4,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import { runScenario, sampleScenario } from "../src/scenario-runner.js";
 import { telemetryCSV, telemetryEnvelope } from "../src/suite-contract.js";
 import { importABKop } from "../src/kop-import.js";
+const {version:simulatorVersion}=JSON.parse(await readFile(new URL("../package.json",import.meta.url),"utf8"));
 const args=process.argv.slice(2);
 const option=name=>{const i=args.indexOf(name);return i>=0?args[i+1]:null;};
 try {
@@ -24,7 +25,7 @@ try {
   await writeFile(out,telemetryCSV(run.samples),"utf8");
   const json=option("--json");
   if(json) await writeFile(json,JSON.stringify({
-    schema:"msrobotika.suite.telemetry.v1",producer:{app:"AB-PLC-Simulator",version:"0.3.0"},
+    schema:"msrobotika.suite.telemetry.v1",producer:{app:"AB-PLC-Simulator",version:simulatorVersion},
     source:"virtual",scenario:spec.scenario,samples:run.samples.map(x=>({
       scan:x.scan,simulatedMs:x.simulatedMs,outputs:x.cpu.outputs,
       inputs:x.cpu.inputs,plant:x.plant,faults:x.faults
