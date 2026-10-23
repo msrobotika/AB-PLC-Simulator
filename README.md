@@ -8,6 +8,26 @@
 
 **Laboratorio de PLC virtual** con CPU RUN/PAUSE/STOP, exploración determinista, bastidor E/S, dos plantas virtuales (transportador y depósito), simulación de averías, forzado de sensores, pruebas y telemetría. El antiguo editor KOP permanece como módulo auxiliar; **el producto principal es el simulador de PLC**.
 
+> **EN:** Open-source virtual PLC lab for learning industrial automation: CPU scan cycles, digital I/O, conveyor/tank simulation and injected faults. **Educational simulator, not an IEC 61131-3-compliant PLC runtime or a safety controller.**
+
+![AB-PLC Simulator: CPU virtual y transportador en ejecución](docs/screenshots/lab-conveyor.png)
+
+### Pruébalo en un minuto · Try it in one minute
+
+Requisito / Requirement: **Node.js 20+** en Windows, Linux o macOS. Ejecuta el simulador local, sin PLC físico:
+
+```bash
+git clone https://github.com/msrobotika/AB-PLC-Simulator.git
+cd AB-PLC-Simulator
+npm run dev
+```
+
+Abre / Open **http://127.0.0.1:4173**. Explora los sensores y el estado de la CPU virtual; activa la simulación de avería para ver el diagnóstico. La lógica, las señales y la planta son **simuladas**. También puedes ejecutar `npm test` para las pruebas automatizadas.
+
+**Explora / Explore:** [capturas reales](docs/screenshots/) · [escenarios de ejemplo](examples/) · [código fuente](src/) · [problemas o ideas](https://github.com/msrobotika/AB-PLC-Simulator/issues).
+
+**Estado de distribución / Download status:** el repositorio proporciona el código fuente; por ahora no hay una Release oficial publicada para este proyecto. La [demo GitHub Pages](https://msrobotika.github.io/AB-PLC-Simulator/) requiere que Pages esté habilitado y desplegado; el arranque local anterior es la opción documentada.
+
 [Demo web (cuando GitHub Pages esté habilitado)](https://msrobotika.github.io/AB-PLC-Simulator/)
 
 ## Capturas de la aplicación real
