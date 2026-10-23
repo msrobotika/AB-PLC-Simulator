@@ -183,3 +183,13 @@ Seguridad: ambos servidores escuchan solo en localhost; la API web requiere toke
 [Arquitectura Suite Live](docs/SUITE_LIVE.md).
 
 **Prueba de integración v0.4:** tests/suite-live.test.mjs verifica órdenes HTTP y lectura Modbus TCP de la misma CPU, control de token y bloqueo de orígenes cruzados. El workflow de capturas genera lab-suite-live.png con Chromium real.
+
+## AB-Suite Core v0.1: bus de eventos interoperable
+
+**Implementación inicial en un paquete independiente**, dentro de este repositorio hasta disponer del repositorio propio AB-Suite-Core.
+
+    npm run suite:core
+
+Arranca el simulador web (localhost:4173), Modbus TCP de solo lectura (localhost:1502) y el bus Suite Core HTTP/SSE (localhost:4175), todos sobre la misma CPU VirtualPLC. El bus añade contratos versionados, tokens por aplicación, replay de eventos y un SDK JavaScript reutilizable.
+
+Consulta [guía general](docs/AB_SUITE_CORE.md) y [README técnico del paquete](packages/ab-suite-core/README.md). **Integración ya probada**: telemetría del PLC virtual al bus. **Pendiente**: adaptadores nativos AB-BI, AB-GRAFCET y AB-Vision, persistencia y distribución en red; no se controla hardware físico.
