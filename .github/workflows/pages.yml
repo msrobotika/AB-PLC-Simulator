@@ -1,9 +1,5 @@
-name: Deploy static demo
+name: Legacy static demo (manual opt-in)
 on:
-  push:
-    branches: [main]
-    paths-ignore:
-      - "docs/screenshots/**"
   workflow_dispatch:
 permissions:
   contents: read
@@ -14,6 +10,8 @@ concurrency:
   cancel-in-progress: true
 jobs:
   deploy:
+    # The maintained product is AB Suite. Legacy Pages requires explicit opt-in.
+    if: vars.ENABLE_LEGACY_PAGES == 'true'
     environment:
       name: github-pages
     runs-on: ubuntu-latest
